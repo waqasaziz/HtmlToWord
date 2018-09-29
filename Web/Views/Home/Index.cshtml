@@ -1,0 +1,21 @@
+﻿@model Web.Models.Search
+@{
+    ViewData["Title"] = "Html to words - Search";
+}
+
+<div class="row">
+    <div class="search">
+        <form asp-action="Search" method="get" class="form-horizontal">
+            <div class="form-group">
+                <label asp-for="URL" class="col-sm-2 sr-only"></label>
+                <div class="col-sm-8 col-sm-offset-2">
+                    <input asp-for="URL" class="form-control" placeholder="URL" />
+                    <span></span>
+                    <span asp-validation-for="URL"></span>
+                </div>
+            </div>
+            <div asp-validation-summary="ModelOnly"></div>
+            <button type="submit" class="btn btn-primary center-block">Search</button>
+        </form>
+    </div>
+</div>

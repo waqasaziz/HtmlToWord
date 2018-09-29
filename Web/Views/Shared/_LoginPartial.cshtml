@@ -1,0 +1,12 @@
+﻿<ul class="nav navbar-nav navbar-right">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <li>Hello @User.Identity.Name</li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+    }
+    @if (User.Identity.IsAuthenticated)
+    {
+        <li><a asp-area="" asp-controller="Account" asp-action="Register">Contact</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Logout">Contact</a></li>
+    }
+</ul>
