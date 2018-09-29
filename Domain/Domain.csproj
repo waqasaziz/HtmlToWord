@@ -5,13 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.8.8" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.12" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore.Design" Version="8.0.12" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
