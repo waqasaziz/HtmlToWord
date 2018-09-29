@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Domain.Data;
+using Microsoft.EntityFrameworkCore;
+using Domain.Security;
 
 namespace Web
 {
@@ -24,6 +27,10 @@ namespace Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddSingleton<IEncryptionProvider, RSAEncryptionProvider>();
+            services.AddSingleton<IHashProvider, SHA256HashingProvider>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -31,6 +38,10 @@ namespace Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<HtmlToWordDbContext>(options => 
+            {
+                options.UseMySql(Configuration.GetConnectionString("Default"));
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
