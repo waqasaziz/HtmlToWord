@@ -8,6 +8,10 @@
     padding-bottom: 10vh;
 }
 
+    .search #btnSearch {
+        width: 100px;
+    }
+
 #loading-div-background {
     display: none;
     position: fixed;
@@ -39,6 +43,6 @@
     margin-top: -100px;
 }
 
-#loading-div h4 {
-    color: #fff;
-}
+    #loading-div h4 {
+        color: #fff;
+    }

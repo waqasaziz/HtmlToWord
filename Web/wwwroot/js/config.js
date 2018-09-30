@@ -7,13 +7,16 @@
         'bootstrap': '../lib/bootstrap/js/bootstrap',
         'jQCloud': '../lib/jqcloud2/dist/jqcloud',
 
-        site: '/site.js'
+
+        'wordSearch': 'search',
+        'site': 'site'
     },
 
     shim: {
         'bootstrap': ['jquery'],
         'jquery-validation': ['jquery'],
-        'jQCloud': ['jquery']
+        'jQCloud': ['jquery'],
+        'wordSearch': ['jQCloud']
     }
 });
 
@@ -70,8 +73,10 @@ require(['jquery', 'bootstrap', 'jquery-validation', 'jquery.validate.unobtrusiv
         }
     });
 
-    $(document).ready(function ($) {
-        $("#loading-div-background").css({ opacity: 0.8 });
+
+    require(['wordSearch'], function (wordSearch) {
+
+        wordSearch.init();
     });
-    
+
 });
