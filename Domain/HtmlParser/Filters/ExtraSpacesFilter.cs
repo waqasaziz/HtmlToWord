@@ -5,8 +5,8 @@ namespace Domain
     /// <summary>
     /// Removes extra spaces from given string
     /// </summary>
-    public class ExtraSpacesFilter : IHtmlFilter
+    public class ExtraSpacesFilter : IFilter
     {
-        public string Filter(string text) => Regex.Replace(text, @"\s+", " ");
+        public string Execute(string text) => Regex.Replace(text, @"\s+", " ").TrimExtraSpaces();
     }
 }

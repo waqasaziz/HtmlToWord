@@ -4,8 +4,8 @@ namespace Domain
 {
     public interface IHtmlParser
     {
-        List<IHtmlFilter> DefaultFilters { get; }
+        List<IFilter> DefaultFilters { get; }
 
-        IEnumerable<string> ExtractWords(string text}
+        IEnumerable<string> ExtractWords(string text);
     }
 }

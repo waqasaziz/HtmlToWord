@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Domain
 {
@@ -18,6 +19,8 @@ namespace Domain
         }
 
         public static string ToBase64String(this byte[] data) => Convert.ToBase64String(data);
+
+        public static string TrimExtraSpaces(this string text) => Regex.Replace(text, @"\s+", " ");
 
         public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) => source.Where(x => !predicate(x));
     }

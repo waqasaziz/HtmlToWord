@@ -5,8 +5,8 @@ namespace Domain
     /// <summary>
     /// Removes all aplha numeric words from given string
     /// </summary>
-    public class AlphaNumericFilter : IHtmlFilter
+    public class AlphaNumericFilter : IFilter
     {
-        public string Filter(string text) => Regex.Replace(text, @"(\d\w*)|([^a-zA-Z -])", " ");
+        public string Execute(string text) => Regex.Replace(text, @"^[a-zA-Z0-9]*$", " ").TrimExtraSpaces();
     }
 }

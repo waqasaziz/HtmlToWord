@@ -6,7 +6,7 @@ namespace Domain
     /// Removes English stop words
     /// Uses Regex Expression from => https://lotsacode.wordpress.com/2010/10/08/remove-google-stopwords-from-string/
     /// </summary>
-    public class StopWordsFilter : IHtmlFilter
+    public class StopWordsFilter : IFilter
     {
         private readonly IStopWordProvider _stopwordProvider;
 
@@ -14,11 +14,11 @@ namespace Domain
         {
             _stopwordProvider = stopwordProvider;
         }
-        public string Filter(string text)
+        public string Execute(string text)
         {
             var regexCode = @"(?<=(\A|\s|\.|,|!|\?))(" + string.Join("|", _stopwordProvider.GetStopWords()) + @")(?=(\s|\z|\.|,|!|\?))";
 
-            return Regex.Replace(text, regexCode, "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            return Regex.Replace(text, regexCode, " ", RegexOptions.Singleline | RegexOptions.IgnoreCase).TrimExtraSpaces();
         }
     }
 }

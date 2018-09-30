@@ -7,15 +7,15 @@ namespace Domain
     {
         private const int MaxWordLengthToRemove = 2;
 
-        public List<IHtmlFilter> DefaultFilters { get; }
+        public List<IFilter> DefaultFilters { get; }
 
         public HtmlParser()
         {
-            DefaultFilters = new List<IHtmlFilter> {
-                new ScriptTagFilter(),
-                new StyleTagFilter(),
+            DefaultFilters = new List<IFilter> {
+                new HtmlTagsFilter(),
                 new AlphaNumericFilter(),
                 new LengthFilter(MaxWordLengthToRemove),
+                new SpecialCharactersFilter(),
                 new StopWordsFilter(new DefaultStopWordProvider()),
                 new ExtraSpacesFilter() };
         }
@@ -25,11 +25,10 @@ namespace Domain
             var result = text;
 
             foreach (var filter in DefaultFilters)
-                result = filter.Filter(result);
+                result = filter.Execute(result);
 
             return result.Split(" ")
-                         .Except(string.IsNullOrEmpty)
-                         .OrderBy(x => x);
+                         .Except(string.IsNullOrEmpty);
         }
     }
 }
