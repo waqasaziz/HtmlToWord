@@ -6,6 +6,18 @@ namespace Tests
     public class TestAlphaNumericHtmlFilter
     {
         [Fact]
+        public void Removes_Numerics()
+        {
+            var text = "XY 160";
+
+            var filter = new AlphaNumericFilter();
+
+            var result = filter.Execute(text).Trim();
+
+            Assert.Equal("XY", result);
+        }
+
+        [Fact]
         public void Removes_Words_Starting_with_Numbers()
         {
             var text = "88XY";
