@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Html to Words</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/jqcloud2/dist/jqcloud.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 
 
@@ -24,8 +25,7 @@
             </div>
             <div class="navbar-collapse collapse">
 
-                <ul class="nav navbar-nav">
-                </ul>
+                <ul class="nav navbar-nav"></ul>
 
                 @*<partial name="_LoginPartial" />*@
 
@@ -34,7 +34,7 @@
     </nav>
 
     <partial name="_CookieConsentPartial" />
-        
+
 
     <div class="container body-content">
         @RenderBody()
@@ -43,9 +43,15 @@
         </footer>
     </div>
 
-
     <script data-main="/js/config.js" src="/lib/requirejs/require.js"></script>
 
     @RenderSection("Scripts", required: false)
+
+    <div id="loading-div-background">
+        <div id="loading-div" class="ui-corner-all">
+            <h4>Building Dictionary, Please wait....</h4>
+        </div>
+    </div>
+
 </body>
 </html>

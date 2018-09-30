@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Domain;
+using Domain.Data;
+using Domain.Repositories;
+using Domain.Security;
+using Domain.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Domain.Data;
-using Microsoft.EntityFrameworkCore;
-using Domain.Security;
+using System.Net.Http;
+using System.Text;
 
 namespace Web
 {
@@ -28,20 +27,26 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddSingleton<IEncryptionProvider, RSAEncryptionProvider>();
-            services.AddSingleton<IHashProvider, SHA256HashingProvider>();
-
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-            services.AddDbContext<HtmlToWordDbContext>(options => 
+            services.AddDbContext<HtmlToWordDbContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("Default"));
             });
+
+            services.AddSingleton<IEncryptionKeyProvider, ConfigurationFileKeyProvider>();
+            services.AddSingleton<IEncryptionProvider>(provider =>
+            {
+                var keyProvider = provider.GetRequiredService<IEncryptionKeyProvider>();
+
+                return new RSAEncryptionProvider(RSAType.RSA2, Encoding.UTF8, keyProvider);
+            });
+
+            services.AddSingleton<IHashProvider, SHA256HashingProvider>();
+            services.AddSingleton<IHtmlParser, HtmlParser>();
+            services.AddSingleton<HttpClient>();
+
+            services.AddScoped<IWordDictionaryRepository, WordDictionaryRepository>();
+            services.AddScoped<IWordDictionaryService, WordDictionaryService>();
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -71,4 +76,5 @@ namespace Web
             });
         }
     }
+
 }

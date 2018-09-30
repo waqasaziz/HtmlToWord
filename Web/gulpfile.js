@@ -29,6 +29,9 @@ var deps = {
     "requirejs": {
         "*.js": ""
     },
+    "jqcloud2": {
+        "**/*": ""
+    },
     "@fortawesome/fontawesome-free-webfonts": {
         "**/*": ""
     }
@@ -60,4 +63,4 @@ gulp.task("less", function () {
         .pipe(gulp.dest('wwwroot/css'));
 });
 
-gulp.task("default", [ 'scripts','less']);
+gulp.task("default", ['scripts', 'less']);

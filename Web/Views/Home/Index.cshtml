@@ -1,11 +1,11 @@
-﻿@model Web.Models.Search
+﻿@model Web.Models.SearchViewModel
 @{
     ViewData["Title"] = "Html to words - Search";
 }
 
 <div class="row">
     <div class="search">
-        <form asp-action="Search" method="get" class="form-horizontal">
+        <form id="searchForm" action="javascript:void(0);" method="POST" onsubmit="search();" class="form-horizontal">
             <div class="form-group">
                 <label asp-for="URL" class="col-sm-2 sr-only"></label>
                 <div class="col-sm-8 col-sm-offset-2">
@@ -15,7 +15,52 @@
                 </div>
             </div>
             <div asp-validation-summary="ModelOnly"></div>
-            <button type="submit" class="btn btn-primary center-block">Search</button>
+            <button id="btnSearch" type="submit" class="btn btn-primary center-block">Search</button>
         </form>
+
     </div>
 </div>
+
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-8"><div id="demo" class="jqcloud"></div></div>
+    <div class="col-sm-4"></div>
+</div>
+
+
+
+@section Scripts
+    {
+
+    <script>
+        const uri = '/';
+        function search() {
+            $("#searchForm").validate();
+
+            if ($("#searchForm").valid()) {
+
+                $("#loading-div-background").show();
+
+                $.ajax({
+                    type: 'POST',
+                    accepts: 'application/json',
+                    url: uri,
+                    contentType: 'application/json',
+                    data: JSON.stringify($('#URL').val()),
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#loading-div-background").hide();
+                    },
+                    success: function (result) {
+                        $("#loading-div-background").hide();
+
+
+                        $("#demo").jQCloud(result, {
+                            width: 500,
+                            height: 350
+                        });
+                    }
+                });
+            }
+        }
+    </script>
+}

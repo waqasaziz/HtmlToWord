@@ -2,7 +2,7 @@
 
 namespace Web.Models
 {
-    public class Search
+    public class SearchViewModel
     {
         [Required, Url]
         public string URL { get; set; }
