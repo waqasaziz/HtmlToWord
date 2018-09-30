@@ -16,6 +16,7 @@
 
                 $("#loading-div-background").show();
 
+
                 $.ajax({
                     type: 'POST',
                     accepts: 'application/json',
@@ -26,12 +27,15 @@
                         $("#loading-div-background").hide();
                     },
                     success: function (result) {
-                        $("#loading-div-background").hide();
 
-                        $("#demo").jQCloud(result, {
+                        $("#demo").jQCloud([], {
                             width: 500,
                             height: 350
                         });
+
+                        $('#demo').jQCloud('update', result);
+
+                        $("#loading-div-background").hide();
                     }
                 });
             }
