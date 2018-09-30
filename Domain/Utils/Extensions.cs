@@ -18,6 +18,17 @@ namespace Domain
             return result.ToString();
         }
 
+        public static byte[] ToByteArray(this string hex)
+        {
+            if (!Regex.IsMatch(hex, @"\A\b[0-9a-fA-F]+\b\Z"))
+                return new byte[0];
+
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
+        }
+
         public static string ToBase64String(this byte[] data) => Convert.ToBase64String(data);
 
         public static string TrimExtraSpaces(this string text) => Regex.Replace(text, @"\s+", " ");

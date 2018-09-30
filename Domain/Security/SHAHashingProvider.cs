@@ -1,12 +1,13 @@
 ﻿namespace Domain.Security
 {
+    using Microsoft.AspNetCore.Cryptography.KeyDerivation;
     using System;
     using System.Security.Cryptography;
     using System.Text;
 
-    public class SHA256HashingProvider : IHashProvider
+    public class HashingProvider : IHashProvider
     {
-        private const int saltLength = 32;
+        private const int DefaultLength = 32;
 
         private byte[] Combine(byte[] first, byte[] second)
         {
@@ -18,24 +19,33 @@
             return ret;
         }
 
-        public byte[] GenerateHash(string text, byte[] salt)
+        public byte[] GenerateSalt()
+        {
+            using (var randomNumberGenerator = new RNGCryptoServiceProvider())
+            {
+                var randomNumber = new byte[DefaultLength];
+                randomNumberGenerator.GetBytes(randomNumber);
+
+                return randomNumber;
+            }
+        }
+
+        public byte[] GenerateSHA256Hash(string text, byte[] salt)
         {
             var bytesToHash = Encoding.UTF8.GetBytes(text);
 
             using (var sha256 = SHA256.Create())
                 return sha256.ComputeHash(Combine(bytesToHash, salt));
         }
-
-        public byte[] GenerateSalt()
+        
+        public byte[] GeneratePBKDF2Hash(string password, byte[] salt)
         {
-            using (var randomNumberGenerator = new RNGCryptoServiceProvider())
-            {
-                var randomNumber = new byte[saltLength];
-                randomNumberGenerator.GetBytes(randomNumber);
-
-                return randomNumber;
-            }
+            return KeyDerivation.Pbkdf2(
+                 password: password,
+                 salt: salt,
+                 prf: KeyDerivationPrf.HMACSHA256,
+                 iterationCount: 10000,
+                 numBytesRequested: DefaultLength);
         }
     }
-
 }

@@ -4,6 +4,8 @@
     {
         byte[] GenerateSalt();
 
-        byte[] GenerateHash(string text, byte[] salt);
+        byte[] GenerateSHA256Hash(string text, byte[] salt);
+
+        byte[] GeneratePBKDF2Hash(string password, byte[] salt);
     }
 }

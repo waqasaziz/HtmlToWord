@@ -6,7 +6,8 @@
     }
     @if (User.Identity.IsAuthenticated)
     {
-        <li><a asp-area="" asp-controller="Account" asp-action="Register">Contact</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Logout">Contact</a></li>
+        <li><a asp-area="" asp-controller="Admin" asp-action="Words">Words</a></li>
+
+        <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
     }
 </ul>

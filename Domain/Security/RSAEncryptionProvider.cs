@@ -82,6 +82,7 @@
             {
                 throw new Exception("_publicKeyRsaProvider is null");
             }
+
             return Convert.ToBase64String(_publicKeyRsaProvider.Encrypt(Encoding.UTF8.GetBytes(text), RSAEncryptionPadding.Pkcs1));
         }
 

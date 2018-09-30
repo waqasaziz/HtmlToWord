@@ -4,6 +4,7 @@
     using Microsoft.EntityFrameworkCore;
     using Security;
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -21,26 +22,11 @@
             _encryptionProvier = encryptionProvier;
         }
 
-        private async Task AddOrUpdate(KeyValuePair<string, int> word)
+        private async Task Add(KeyValuePair<string, int> word)
         {
-            //Encrypt Word
-            var encryptedWord = _encryptionProvier.Encrypt(word.Key.ToUpperFirstLetter());
-
-            //Find existing
-            var existingWord =  await _context.WordDictionary.SingleOrDefaultAsync(x => x.Word == encryptedWord);
-
-            // If exists then update and return 
-            if (existingWord != null)
-            {
-                existingWord.Count += word.Value;
-                _context.WordDictionary.Update(existingWord);
-
-                return;
-            }
-
-            // Add new word
             var salt = _hashProvider.GenerateSalt();
-            var hash = _hashProvider.GenerateHash(word.Key, salt);
+            var hash = _hashProvider.GenerateSHA256Hash(word.Key, salt);
+            var encryptedWord = _encryptionProvier.Encrypt(word.Key.Trim().ToUpperFirstLetter());
             await _context.WordDictionary.AddAsync(new WordDictionary
             {
                 Id = hash.ToHexString(),
@@ -54,17 +40,23 @@
         public async Task SaveWordsAsync(Dictionary<string, int> wordsDictionary)
         {
             foreach (var word in wordsDictionary)
-                await AddOrUpdate(word);
+                await Add(word);
 
             await _context.SaveChangesAsync();
-        } 
+        }
 
         public Dictionary<string, int> GetAll()
         {
-            return _context.WordDictionary
-                    .OrderByDescending(x => x.Count)
+            var words = _context.WordDictionary
                     .AsNoTracking()
-                    .ToDictionary(entry => _encryptionProvier.Decrypt(entry.Word), entry => entry.Count);
+                    .ToList();
+
+            var result = new ConcurrentDictionary<string, int>();
+
+            words.AsParallel()
+                .ForAll(item => result.AddOrUpdate(_encryptionProvier.Decrypt(item.Word), 1, (k, v) => v + item.Count));
+
+            return result.OrderByDescending(x => x.Value).ToDictionary(entry => entry.Key, entry => entry.Value);
 
         }
 

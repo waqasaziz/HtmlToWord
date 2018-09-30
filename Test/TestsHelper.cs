@@ -17,7 +17,7 @@
     {
         private HtmlToWordDbContext _context;
 
-        internal static SHA256HashingProvider HasingProvider { get; } = new SHA256HashingProvider();
+        internal static HashingProvider HasingProvider { get; } = new HashingProvider();
 
         internal static RSAEncryptionProvider EncryptionProvider { get; } = new RSAEncryptionProvider(RSAType.RSA2, Encoding.UTF8, new InMemoryEncryptionKeyProvider());
 
