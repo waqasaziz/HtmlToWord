@@ -22,6 +22,15 @@ namespace Domain
 
         public static string TrimExtraSpaces(this string text) => Regex.Replace(text, @"\s+", " ");
 
+        public static string ToUpperFirstLetter(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return string.Empty;
+
+            return char.ToUpper(text[0]) + text.Substring(1).ToLower();
+        }
+
+
         public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) => source.Where(x => !predicate(x));
     }
 }

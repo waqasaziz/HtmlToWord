@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Domain.Data
+﻿namespace Domain.Data
 {
+    using Microsoft.EntityFrameworkCore;
+
     public class HtmlToWordDbContext : DbContext
     {
         public HtmlToWordDbContext(DbContextOptions options) : base(options) { }
@@ -25,7 +25,7 @@ namespace Domain.Data
 
             modelBuilder.Entity<WordDictionary>()
                      .Property(x => x.Word)
-                     .HasColumnType("char(64)")
+                     .HasColumnType("nvarchar(344)")
                      .IsRequired();
 
             base.OnModelCreating(modelBuilder);

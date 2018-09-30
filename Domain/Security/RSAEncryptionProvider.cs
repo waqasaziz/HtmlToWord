@@ -21,17 +21,17 @@
         private readonly HashAlgorithmName _hashAlgorithmName;
         private readonly Encoding _encoding;
 
-        public RSAEncryptionProvider(RSAType rsaType, Encoding encoding, string privateKey, string publicKey = null)
+        public RSAEncryptionProvider(RSAType rsaType, Encoding encoding, IEncryptionKeyProvider keyProvider)
         {
             _encoding = encoding;
-            if (!string.IsNullOrEmpty(privateKey))
+            if (!string.IsNullOrEmpty(keyProvider.PrivateKey))
             {
-                _privateKeyRsaProvider = CreateProviderFromPrivateKey(privateKey);
+                _privateKeyRsaProvider = CreateProviderFromPrivateKey(keyProvider.PrivateKey);
             }
 
-            if (!string.IsNullOrEmpty(publicKey))
+            if (!string.IsNullOrEmpty(keyProvider.PublicKey))
             {
-                _publicKeyRsaProvider = CreateProviderFromPublicKey(publicKey);
+                _publicKeyRsaProvider = CreateProviderFromPublicKey(keyProvider.PublicKey);
             }
 
             _hashAlgorithmName = rsaType == RSAType.RSA ? HashAlgorithmName.SHA1 : HashAlgorithmName.SHA256;
