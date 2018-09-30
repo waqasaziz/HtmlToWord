@@ -36,6 +36,8 @@ DotNet Core web application which converts a given URL's html to dictionary dict
 - run npm install to install all packages
 - Open solution, restore nuget pakcges and build entire solution
 - Update connectionstring in app setting to correct MySQL connection details
+- RSA encryption and decryption using OpenSSL public key encryption / private key decryption
+- Public and private keys, please use openssl to generate ssh-keygen -t rsa command generated public key private key is not acceptable
 
 ##### Todo
 - Encription Keys are stored in appsettings. I wanted to use Azure Key Walt but couldn't get enough time to apply. It uses slot/production app settings at the moment to override keys for each enviroment.
