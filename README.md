@@ -42,3 +42,4 @@ DotNet Core web application which converts a given URL's html to dictionary dict
 ##### Todo
 - Encription Keys are stored in appsettings. I wanted to use Azure Key Walt but couldn't get enough time to apply. It uses slot/production app settings at the moment to override keys for each enviroment.
 - Unit tests for controllers are not done due to shoratge of time.
+- Pagination of admin words list 
